@@ -217,7 +217,7 @@ class SimpleGeo extends CURL {
 			$lng = $lat->lng;
 			$lat = $lat->lat;
 		}
-		return $this->SendRequest('GET', '1.0/places/' . $lat . ',' . $lng . '.json', $opts);
+		return $this->SendRequest('GET', '1.2/places/' . $lat . ',' . $lng . '.json', $opts);
 	}
 	
 	
@@ -236,6 +236,24 @@ class SimpleGeo extends CURL {
 		return $this->SendRequest('GET', '1.0/places/address.json', array_merge(array(
 			'address' => $address
 		), $opts));
+	}
+
+	/**
+		Searches a place's name, categories, phone number, address, city, state, and country.
+		
+		@var string $searchText
+		
+		@param string category	Filter by a classifer (see https://gist.github.com/732639)
+		@param int limit The number of results to return (1-100). The default is 25.
+		@param int start The first place that should be returned, e.g. start=50 would return places 
+		                 starting with the 50th result. Useful for pagination.
+
+	**/
+	public function PlacesSearch($searchText, $opts = false) {
+		if (!is_array($opts))
+			$opts = array();
+		$opts['q'] = $searchText;
+		return $this->SendRequest('GET', '1.2/places/search.json', $opts);
 	}
 	
 	
@@ -277,6 +295,15 @@ class SimpleGeo extends CURL {
 	**/
 	public function DeletePlace(Place $place) {
 		return $this->SendRequest('DELETE', '1.0/features/' . $place->ID . '.json');
+	}
+
+	/**
+		Gets a place based on a given id.
+
+		@var string $id The id of the place
+	**/
+	public function GetPlace($id) {
+		return $this->SendRequest('GET', '1.2/places/' . $id . '.json');
 	}
 	
 
