@@ -1,7 +1,9 @@
 <?php
 
-include 'OAuth.php';
-include 'CURL.php';
+if (!class_exists('OAuthConsumer', false)) // giving a chance for other code possibly already including OAuth.php
+	include 'OAuth.php';
+if (!class_exists('CURL', false))
+	include 'CURL.php';
 
 
 /**
