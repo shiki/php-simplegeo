@@ -411,7 +411,53 @@ class SimpleGeo extends CURL {
 		return $this->SendRequest('GET', '0.1/records/' . $layer . '/nearby/' . $ip . '.json', $params);
 	}
 
+	/**
+		Retrieve all layers you own.
+
+		@params	array	$params	Additional parameters in an associate array (limit, cursor)
+		
+	**/
+	public function GetLayers($params = array()) {
+		return $this->SendRequest('GET', '0.1/layers.json', $params);
+	}
+
+	/**
+		Retrieve details of a layer.
+
+		@var	string	$layer	The name of the layer
+
+	**/
+	public function GetLayer($layer) {
+		return $this->SendRequest('GET', '0.1/layers/' . $layer . '.json');
+	}
+
+	/**
+		Create or update a layer.
+
+		@var	string	$layer	The name of the layer to create or update
+		@var	string	$title	
+		@var	string	$description
+		@var	boolean	$public	
+
+	**/
+	public function PutLayer($layer, $title, $description, $public = false) {
+		$params = array(
+			'title' => $title,
+			'description' => $description,
+			'public' => $public,
+		);
+		return $this->SendRequest('PUT', '0.1/layers/' . $layer . '.json', json_encode($params));
+	}
 	
+	/**
+		Delete a layer
+
+		@var	string	$layer	The name of the layer to delete
+
+	**/
+	public function DeleteLayer($layer) {
+		return $this->SendRequest('DELETE', '0.1/layers/' . $layer . '.json');
+	}
 	
 	/**
 		Include the OAuthHeader in the request
